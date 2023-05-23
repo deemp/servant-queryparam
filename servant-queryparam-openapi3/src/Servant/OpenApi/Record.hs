@@ -1,18 +1,8 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE InstanceSigs #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 -- | This module exports orphan instances to make
--- [@servant-queryparam-core@](https://hackage.haskell.org/package/servant-queryparam-core) work with [@servant-openapi3@](https://hackage.haskell.org/package/servant-openapi3).
+-- [@servant-openapi3@](https://hackage.haskell.org/package/servant-openapi3) work with [@servant-queryparam-core@](https://hackage.haskell.org/package/servant-queryparam-core).
 module Servant.OpenApi.Record () where
 
 import Data.OpenApi
