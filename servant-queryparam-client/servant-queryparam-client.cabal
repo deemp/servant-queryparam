@@ -1,13 +1,16 @@
 cabal-version: 2.2
 name:          servant-queryparam-client
-version:       0.0.1
-synopsis:
+version:       1.0.0
+synopsis:      Client support for servant-queryparam-core.
+description:
   Client support for [servant-queryparam-core](https://hackage.haskell.org/package/servant-queryparam-core).
 
-maintainer:    https://github.com/deemp
+maintainer:    Danila Danko <https://github.com/deemp>
+author:        Kristof Bastiaensen
 copyright:     Kristof Bastiaensen 2020
 license:       BSD-3-Clause
 build-type:    Simple
+category:      Servant, Web
 
 source-repository head
   type:     git
@@ -22,4 +25,4 @@ library
     , base                     >=4.16  && <5
     , servant                  >=0.19
     , servant-client-core      >=0.19
-    , servant-queryparam-core  >=0.0.1
+    , servant-queryparam-core  >=1.0.0

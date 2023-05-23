@@ -1,10 +1,13 @@
 cabal-version: 2.2
 name:          servant-queryparam-example
-version:       0.0.1
-synopsis:      Demo server with records that represent query parameters in @servant@ APIs.
+version:       1.0.0
+synopsis:
+  Demo server with records that represent query parameters in @servant@ APIs.
+
 license:       BSD-3-Clause
 author:        Danila Danko
-maintainer:    https://github.com/deemp
+maintainer:    Danila Danko <https://github.com/deemp>
+category:      Servant, Web
 
 executable example
   default-language: GHC2021
@@ -16,7 +19,7 @@ executable example
     , openapi3
     , servant
     , servant-openapi3
-    , servant-queryparam-core      >=0.0.1
+    , servant-queryparam-core      >=1.0.0
     , servant-queryparam-openapi3
     , servant-queryparam-server
     , servant-server
