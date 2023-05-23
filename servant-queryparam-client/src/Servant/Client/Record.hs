@@ -11,9 +11,9 @@
 
 -- | This module exports orphan instances to make
 -- [@servant-queryparam-core@](https://hackage.haskell.org/package/servant-queryparam-core) work with clients.
-module Servant.Client.Record (GHasClient, RunClient, genericClientWithRoute, genericHoistClientMonad) where
+module Servant.Client.Record () where
 
-import Data.Kind (Type)
+import Data.Kind
 import Data.Proxy
 import GHC.Generics
 import GHC.TypeLits
@@ -64,33 +64,6 @@ class GHasClient (mod :: Symbol -> Exp Symbol) m (a :: Type -> Type) api where
     (forall x. mon x -> mon' x) ->
     (a () -> Client mon api) ->
     (a () -> Client mon' api)
-
-genericClientWithRoute ::
-  forall mod m a api.
-  ( GHasClient mod m a api,
-    RunClient m
-  ) =>
-  Proxy mod ->
-  Proxy m ->
-  Proxy api ->
-  Request ->
-  a () ->
-  Client m api
-genericClientWithRoute = gClientWithRoute
-
-genericHoistClientMonad ::
-  forall mod m a api mon mon'.
-  ( GHasClient mod m a api,
-    RunClient m
-  ) =>
-  RunClient m =>
-  Proxy mod ->
-  Proxy m ->
-  Proxy api ->
-  (forall x. mon x -> mon' x) ->
-  (a () -> Client mon api) ->
-  (a () -> Client mon' api)
-genericHoistClientMonad = gHoistClientMonad
 
 instance
   ( RunClient m,

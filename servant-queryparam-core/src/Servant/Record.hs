@@ -56,11 +56,9 @@ import Servant.TypeLevel
 --
 -- The instance of 'Eval' for @DropPrefixExp sym@ drops the prefix of that @sym@ via 'DropPrefix'.
 --
--- 'DropPrefix' will be applied to the fields of @UserParams@.
+-- 'DropPrefix' is applied to the fields of @UserParams@.
 --
--- Then, the @"_userParams_category"@ record field will correspond to the query parameter @"category"@.
-
--- | A record parameter
+-- The @"_userParams_category"@ record field corresponds to the query parameter @"category"@.
 data RecordParam (mod :: Symbol -> Exp Symbol) (a :: Type)
 
 -- | Append an element to a servant API
@@ -116,8 +114,8 @@ instance GHasLink mod c sub => GHasLink mod (D1 m c) sub where
   {-# INLINE gToLink #-}
 
 instance
-  ( HasLink sub,
-    GHasLink mod a (GParam mod (b ()) :> sub)
+  ( HasLink sub
+  , GHasLink mod a (GParam mod (b ()) :> sub)
   ) =>
   GHasLink mod (a :*: b) sub
   where
@@ -126,8 +124,8 @@ instance
   {-# INLINE gToLink #-}
 
 instance
-  ( GHasLink mod a sub,
-    HasLink sub
+  ( GHasLink mod a sub
+  , HasLink sub
   ) =>
   GHasLink mod (C1 m a) sub
   where
@@ -136,9 +134,9 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    HasLink (sub :: Type)
+  ( KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , HasLink (sub :: Type)
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 Bool)) sub
   where
@@ -148,11 +146,11 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    ToHttpApiData a,
-    HasLink (a :> sub),
-    HasLink sub
+  ( KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , ToHttpApiData a
+  , HasLink (a :> sub)
+  , HasLink sub
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 [a])) sub
   where
@@ -162,11 +160,11 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    ToHttpApiData a,
-    HasLink (a :> sub),
-    HasLink sub
+  ( KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , ToHttpApiData a
+  , HasLink (a :> sub)
+  , HasLink sub
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 (Maybe a))) sub
   where
@@ -176,11 +174,11 @@ instance
 
 instance
   {-# OVERLAPPABLE #-}
-  ( KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    ToHttpApiData a,
-    HasLink (a :> sub),
-    HasLink sub
+  ( KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , ToHttpApiData a
+  , HasLink (a :> sub)
+  , HasLink sub
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 a)) sub
   where

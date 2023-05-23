@@ -27,13 +27,14 @@ module Servant.TypeLevel
     Eval,
     Exp,
 
-    -- * Helper list functions
-    ToList,
-    ToList1,
+    -- * List functions
     FromList,
     FromList1,
+    ToList,
+    ToList1,
 
-    -- * Helper comparison functions
+    -- * Comparison functions
+    TyEq,
     NotTyEq,
 
     -- * Examples
@@ -51,7 +52,7 @@ import GHC.TypeLits
 type family ToList (sym :: Symbol) :: [Char] where
   ToList sym = ToList1 (UnconsSymbol sym)
 
--- | Convert a possibly unconsed 'Symbol' to a list of 'Char's
+-- | Convert a possibly unconsed 'Symbol' to a list of 'Char's.
 type family ToList1 (sym :: Maybe (Char, Symbol)) :: [Char] where
   ToList1 'Nothing = '[]
   ToList1 ('Just '(c, sym)) = c : ToList1 (UnconsSymbol sym)
@@ -66,7 +67,7 @@ type family FromList (cs :: [Char]) :: Symbol where
 
 -- | Convert a list of 'Char's to a 'Symbol'.
 --
--- In this list, 'Chars' go in reverse order.
+-- In this list, 'Chars' go in a reverse order.
 --
 -- >>> :kind! FromList1 ['a', 'b', 'c'] ""
 -- FromList1 ['a', 'b', 'c'] "" :: Symbol
@@ -91,7 +92,7 @@ type family NotTyEqImpl (a :: k) (b :: k) :: Bool where
 
 -- | Drop leading underscores.
 --
--- >>> :kind! Eval (DropUnderscores ['b','_', '_', 'a'])
+-- >>> :kind! Eval (DropUnderscores ['_', '_', 'a'])
 -- Eval (DropUnderscores ['_', '_', 'a']) :: [Char]
 -- = '['a']
 type DropUnderscores = DropWhile (TyEq '_')

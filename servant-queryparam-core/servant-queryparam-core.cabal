@@ -1,7 +1,7 @@
 cabal-version: 2.2
 name:          servant-queryparam-core
 synopsis:
-  support records and named (from the named package) parameters in servant
+  Use records to specify query parameters in @servant@ APIs
 
 version:       0.0.1
 maintainer:    https://github.com/deemp
@@ -10,8 +10,8 @@ license:       BSD-3-Clause
 build-type:    Simple
 description:
   Having positional parameters in Servant can be error-prone, especially if there are a lot of them and they have similar types.
-  This package solves that problem by letting use records to specify @servant@ query parameters.
-  Use @servant-queryparam-server@ for servers and @servant-queryparam-client@ for clients.
+  This package solves that problem by letting one use records to specify query parameters in @servant@ APIs.
+  Use [servant-queryparam-server](https://hackage.haskell.org/package/servant-queryparam-server) for servers and [servant-queryparam-client](https://hackage.haskell.org/package/servant-queryparam-client) for clients.
 
 source-repository head
   type:     git
