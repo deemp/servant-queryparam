@@ -1,0 +1,31 @@
+cabal-version: 2.2
+name:          servant-queryparam-core
+synopsis:
+  support records and named (from the named package) parameters in servant
+
+version:       0.0.1
+maintainer:    https://github.com/deemp
+copyright:     Kristof Bastiaensen 2020
+license:       BSD-3-Clause
+build-type:    Simple
+description:
+  Having positional parameters in Servant can be error-prone, especially if there are a lot of them and they have similar types.
+  This package solves that problem by letting use records to specify @servant@ query parameters.
+  Use @servant-queryparam-server@ for servers and @servant-queryparam-client@ for clients.
+
+source-repository head
+  type:     git
+  location: https://github.com/deemp/servant-queryparam
+
+library
+  default-language: GHC2021
+  ghc-options:      -Wall
+  exposed-modules:
+    Servant.Record
+    Servant.TypeLevel
+
+  hs-source-dirs:   src
+  build-depends:
+    , base                  >=4.16    && <5
+    , first-class-families  >=0.8.0.0
+    , servant               >=0.19

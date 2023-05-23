@@ -1,0 +1,24 @@
+cabal-version: 2.2
+name:          servant-queryparam-example
+version:       0.0.1
+synopsis:      Demo server with records that represent query parameters.
+license:       BSD-3-Clause
+author:        Danila Danko
+maintainer:    https://github.com/deemp
+
+executable example
+  default-language: GHC2021
+  main-is:          Main.hs
+  build-depends:
+    , aeson
+    , base                         >=4.16  && <5
+    , bytestring
+    , openapi3
+    , servant
+    , servant-openapi3
+    , servant-queryparam-core      >=0.0.1
+    , servant-queryparam-openapi3
+    , servant-queryparam-server
+    , servant-server
+    , transformers
+    , warp
