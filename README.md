@@ -27,6 +27,10 @@ This repository provides a `Nix` flake with development tools and Nix derivation
 
 ### Prerequisites
 
+<details>
+
+  <summary>Spoiler</summary>
+
 - [flake.nix](./flake.nix) - code in this flake is extensively commented.
 - [language-tools/haskell](https://github.com/deemp/flakes/blob/main/language-tools/haskell/flake.nix) - a flake that conveniently provides `Haskell` tools.
 - [Conventions](https://github.com/deemp/flakes/blob/main/README/Conventions.md#dev-tools) - I recommended to use this flake just for development. For packaging an app, make another flake with a limited number of inputs to reduce the `flake.lock` size.
@@ -42,11 +46,13 @@ See these for additional info:
 - [Nixpkgs support for incremental Haskell builds](https://www.haskellforall.com/2022/12/nixpkgs-support-for-incremental-haskell.html)
 - [flakes](https://github.com/deemp/flakes#readme) - my Nix flakes that may be useful for you.
 
+</details>
+
 ### Quick start
 
 1. Install Nix - see [how](https://github.com/deemp/flakes/blob/main/README/InstallNix.md).
 
-1. In a new terminal, start a devshell and run the app.
+1. In a new terminal, start a devshell and build all packages.
 
     ```console
     nix develop
