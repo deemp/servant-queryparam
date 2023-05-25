@@ -11,7 +11,7 @@ These libraries are:
 
 An example of a server:
 
-- [servant-queryparam-core](./servant-queryparam-example)
+- [servant-queryparam-core-example](./servant-queryparam-example)
 
 ## Build
 
