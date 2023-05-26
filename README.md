@@ -1,6 +1,6 @@
 # servant-queryparam
 
-Provides serveral libraries that let you use records to specify query parameters in [servant](https://hackage.haskell.org/package/servant) APIs.
+Provides several libraries that let you use records to specify query parameters in [servant](https://hackage.haskell.org/package/servant) APIs.
 
 These libraries are:
 

@@ -25,3 +25,12 @@ executable example
     , servant-server
     , transformers
     , warp
+
+test-suite readme-hs-to-md
+  type: exitcode-stdio-1.0
+  default-language: GHC2021
+  main-is:          HsMd.hs
+  build-depends:
+    , base  >=4.16
+    , lima
+    , text

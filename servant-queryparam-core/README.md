@@ -1,11 +1,24 @@
-{-
+# servant-queryparam
+
+Provides several libraries that let you use records to specify query parameters in [servant](https://hackage.haskell.org/package/servant) APIs.
+
+These libraries are:
+
+- [servant-queryparam-core](https://github.com/deemp/servant-queryparam/blob/main/servant-queryparam-core)
+- [servant-queryparam-server](https://github.com/deemp/servant-queryparam/blob/main/servant-queryparam-server)
+- [servant-queryparam-client](https://github.com/deemp/servant-queryparam/blob/main/servant-queryparam-client)
+- [servant-queryparam-openapi3](https://github.com/deemp/servant-queryparam/blob/main/servant-queryparam-openapi3)
+
+The following example was taken from [here](https://github.com/deemp/servant-queryparam/tree/main/servant-queryparam-example).
+
 ## Example
 
 This example demonstrates servant APIs with query parameters.
 There's an OpenAPI specification for each of them.
 
 First, I enable compiler extensions.
--}
+
+```haskell
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DerivingStrategies #-}
@@ -13,10 +26,11 @@ First, I enable compiler extensions.
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TypeFamilies #-}
+```
 
-{-
 Next, I import the necessary modules.
--}
+
+```haskell
 import Control.Monad.IO.Class (MonadIO (..))
 import Control.Monad.Trans.Except (ExceptT (..))
 import Data.Aeson (ToJSON)
@@ -35,39 +49,44 @@ import Servant.Record (RecordParam)
 import Servant.Server.Generic (genericServe, genericServeTWithContext)
 import Servant.Server.Record ()
 import Servant.TypeLevel (DropPrefix, Eval, Exp)
+```
 
-{-
 I define a label for dropping the prefix of a `Symbol`.
--}
+
+```haskell
 data DropPrefixExp :: Symbol -> Exp Symbol
+```
 
-{-
 Next, I provide an interpreter for that wrapper.
--}
+
+```haskell
 type instance Eval (DropPrefixExp sym) = DropPrefix sym
+```
 
-{-
 `DropPrefix` drops the leading `'_'` characters, then the non-`'_'` characters, then the `'_'` characters.
--}
 
+```haskell
 -- >>> :kind! DropPrefix "_params_user"
 -- DropPrefix "_params_user" :: Symbol
 -- = "user"
+```
 
-{-
 Then, I define a label for keeping the prefix of a `Symbol`.
--}
+
+```haskell
 data KeepPrefixExp :: Symbol -> Exp Symbol
+```
 
-{-
 The interpreter of this label does nothing to a `Symbol`.
--}
-type instance Eval (KeepPrefixExp sym) = sym
 
-{-
+```haskell
+type instance Eval (KeepPrefixExp sym) = sym
+```
+
 Now, I write a record.
 I'll use this record to produce query parameters.
--}
+
+```haskell
 data Params = Params
   { _params_user :: Maybe String
   , _params_users :: [String]
@@ -75,43 +94,48 @@ data Params = Params
   , _params_userFlag :: Bool
   }
   deriving (Show, Generic, Typeable, ToJSON, ToSchema)
+```
 
-{-
 This is our first API.
 In this API, the query parameter names are the record field names with dropped prefixes.
 E.g., the query parameter `user` corresponds to the field name `_params_user`.
--}
+
+```haskell
 newtype UserAPI1 routes = UserAPI1
   { get :: routes :- "get" :> RecordParam DropPrefixExp Params :> Get '[JSON] [String]
   }
   deriving (Generic)
+```
 
-{-
 This is our second API.
 In this API, query parameter names are the record field names.
 E.g., the query parameter `_params_user` corresponds to the field name `_params_user`.
--}
+
+```haskell
 newtype UserAPI2 routes = UserAPI2
   { get :: routes :- "get" :> RecordParam KeepPrefixExp Params :> Get '[JSON] [String]
   }
   deriving (Generic)
+```
 
-{-
 Now, I define an OpenAPI specification for the first API.
--}
+
+```haskell
 specDrop :: OpenApi
 specDrop = toOpenApi (Proxy :: Proxy (NamedRoutes UserAPI1))
+```
 
-{-
 Then, I define an OpenAPI specification for the second API.
--}
+
+```haskell
 specKeep :: OpenApi
 specKeep = toOpenApi (Proxy :: Proxy (NamedRoutes UserAPI2))
+```
 
-{-
 Following that, I define an `Application`.
 At the `/get` endpoint, the application returns a list of query parameter values.
--}
+
+```haskell
 server :: Application
 server =
   genericServeTWithContext
@@ -124,12 +148,13 @@ server =
               <> [_params_oneUser, show _params_userFlag]
       }
     EmptyContext
+```
 
-{-
 Finally, I combine all parts.
 
 First, the application will print the OpenAPI specifications in JSON format. Next, it will start a server.
--}
+
+```haskell
 main :: IO ()
 main = do
   putStrLn "\n---\nQuery parameters without prefixes\n---\n"
@@ -141,8 +166,8 @@ main = do
   putStrLn "\nTry running\n"
   putStrLn "curl -v \"localhost:8080/get?user=1&users=2&users=3&oneUser=4&userFlag=true\""
   Warp.run 8080 server
+```
 
-{-
 ## Run
 
 Run the server.
@@ -165,4 +190,3 @@ You should receive the values of query parameters in a list.
 ...
 ["1","2","3","4","True"]
 ```
--}
