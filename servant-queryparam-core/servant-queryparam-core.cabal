@@ -1,7 +1,7 @@
 cabal-version: 2.2
 name:          servant-queryparam-core
 synopsis:      Use records for query parameters in servant APIs.
-version:       2.0.0
+version:       2.0.1
 maintainer:    Danila Danko <https://github.com/deemp>
 author:        Kristof Bastiaensen
 copyright:     Kristof Bastiaensen 2020

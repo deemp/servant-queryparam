@@ -1,6 +1,6 @@
 cabal-version: 2.2
 name:          servant-queryparam-example
-version:       1.0.1
+version:       1.0.2
 synopsis:
   Demo server with records that represent query parameters in @servant@ APIs.
 

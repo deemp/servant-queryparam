@@ -14,7 +14,7 @@
 
 -- | This module exports orphan instances to make
 -- [@servant-queryparam-core@](https://hackage.haskell.org/package/servant-queryparam-core) work with servers.
-module Servant.Server.Record () where
+module Servant.QueryParam.Server.Record () where
 
 import Data.Kind
 import Data.Proxy

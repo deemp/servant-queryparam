@@ -3,7 +3,7 @@
 
 -- | This module exports orphan instances to make
 -- [@servant-openapi3@](https://hackage.haskell.org/package/servant-openapi3) work with [@servant-queryparam-core@](https://hackage.haskell.org/package/servant-queryparam-core).
-module Servant.OpenApi.Record () where
+module Servant.QueryParam.OpenApi.Record () where
 
 import Data.OpenApi
 import Data.Proxy

@@ -1,6 +1,6 @@
 cabal-version: 2.2
 name:          servant-queryparam-server
-version:       1.0.1
+version:       2.0.0
 maintainer:    Danila Danko <https://github.com/deemp>
 author:        Kristof Bastiaensen
 copyright:     Kristof Bastiaensen 2020
@@ -20,7 +20,7 @@ source-repository head
 library
   default-language: GHC2021
   ghc-options:      -Wall
-  exposed-modules:  Servant.Server.Record
+  exposed-modules:  Servant.QueryParam.Server.Record
   hs-source-dirs:   src
   build-depends:
       base                     >=4.16  && <5

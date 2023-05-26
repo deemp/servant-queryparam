@@ -1,6 +1,6 @@
 cabal-version: 2.2
 name:          servant-queryparam-openapi3
-version:       1.0.2
+version:       2.0.0
 maintainer:    Danila Danko <https://github.com/deemp>
 author:        Kristof Bastiaensen
 copyright:     Kristof Bastiaensen 2020
@@ -21,7 +21,7 @@ source-repository head
 library
   default-language: GHC2021
   ghc-options:      -Wall
-  exposed-modules:  Servant.OpenApi.Record
+  exposed-modules:  Servant.QueryParam.OpenApi.Record
   hs-source-dirs:   src
   build-depends:
     , base                     >=4.16  && <5
