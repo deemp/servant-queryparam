@@ -9,14 +9,14 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 -- | This module provides functions and instances for working with query parameter records.
-module Servant.Record (RecordParam, UnRecordParam) where
+module Servant.QueryParam.Record (RecordParam, UnRecordParam) where
 
 import Data.Kind
 import Data.Proxy
 import GHC.Generics
 import GHC.TypeLits
 import Servant.API
-import Servant.TypeLevel
+import Servant.QueryParam.TypeLevel
 
 -- | 'RecordParam' uses fields in a record to represent query parameters.
 --

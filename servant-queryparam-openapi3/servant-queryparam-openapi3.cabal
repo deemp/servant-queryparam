@@ -1,6 +1,6 @@
 cabal-version: 2.2
 name:          servant-queryparam-openapi3
-version:       1.0.1
+version:       1.0.2
 maintainer:    Danila Danko <https://github.com/deemp>
 author:        Kristof Bastiaensen
 copyright:     Kristof Bastiaensen 2020
@@ -28,4 +28,4 @@ library
     , openapi3
     , servant                  >=0.19
     , servant-openapi3
-    , servant-queryparam-core  >=1.0.0
+    , servant-queryparam-core  >=2.0.0

@@ -31,10 +31,10 @@ import Network.Wai.Handler.Warp qualified as Warp
 import Servant (Application, Context (..), GenericMode ((:-)), Get, Handler (..), JSON, NamedRoutes, ServerError, (:>))
 import Servant.OpenApi (HasOpenApi (..))
 import Servant.OpenApi.Record ()
-import Servant.Record (RecordParam)
+import Servant.QueryParam.Record (RecordParam)
+import Servant.QueryParam.TypeLevel (DropPrefix, Eval, Exp)
 import Servant.Server.Generic (genericServe, genericServeTWithContext)
 import Servant.Server.Record ()
-import Servant.TypeLevel (DropPrefix, Eval, Exp)
 
 {-
 I define a label for dropping the prefix of a `Symbol`.

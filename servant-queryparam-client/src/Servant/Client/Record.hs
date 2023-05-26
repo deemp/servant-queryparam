@@ -21,13 +21,13 @@ import Servant.API
 import Servant.Client.Core.HasClient
 import Servant.Client.Core.Request
 import Servant.Client.Core.RunClient
-import Servant.Record
-import Servant.TypeLevel
+import Servant.QueryParam.Record
+import Servant.QueryParam.TypeLevel
 
 instance
-  ( RunClient m,
-    Generic a,
-    GHasClient mod m (Rep a) api
+  ( RunClient m
+  , Generic a
+  , GHasClient mod m (Rep a) api
   ) =>
   HasClient m (RecordParam mod a :> api)
   where
@@ -66,8 +66,8 @@ class GHasClient (mod :: Symbol -> Exp Symbol) m (a :: Type -> Type) api where
     (a () -> Client mon' api)
 
 instance
-  ( RunClient m,
-    GHasClient mod m a api
+  ( RunClient m
+  , GHasClient mod m a api
   ) =>
   HasClient m (GParam mod (a ()) :> api)
   where
@@ -116,9 +116,9 @@ instance GHasClient mod m a api => GHasClient mod m (C1 mon a) api where
 
 instance
   {-# OVERLAPPING #-}
-  ( HasClient m api,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym))
+  ( HasClient m api
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
   ) =>
   GHasClient mod m (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 Bool)) api
   where
@@ -136,10 +136,10 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( ToHttpApiData a,
-    HasClient m api,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym))
+  ( ToHttpApiData a
+  , HasClient m api
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
   ) =>
   GHasClient mod m (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 [a])) api
   where
@@ -157,10 +157,10 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( ToHttpApiData a,
-    HasClient m api,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym))
+  ( ToHttpApiData a
+  , HasClient m api
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
   ) =>
   GHasClient
     mod
@@ -186,10 +186,10 @@ instance
 
 instance
   {-# OVERLAPPABLE #-}
-  ( ToHttpApiData a,
-    HasClient m api,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym))
+  ( ToHttpApiData a
+  , HasClient m api
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
   ) =>
   GHasClient
     mod

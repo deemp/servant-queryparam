@@ -21,10 +21,10 @@ import Data.Proxy
 import GHC.Generics
 import GHC.TypeLits
 import Servant.API
-import Servant.Record
+import Servant.QueryParam.Record
+import Servant.QueryParam.TypeLevel
 import Servant.Server
 import Servant.Server.Internal
-import Servant.TypeLevel
 
 instance (Generic a, GHasServer mod (Rep a) context api) => HasServer (RecordParam mod a :> api) context where
   type ServerT (RecordParam mod a :> api) m = a -> ServerT api m
@@ -111,9 +111,9 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( HasServer (api :: Type) context,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym))
+  ( HasServer (api :: Type) context
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
   ) =>
   GHasServer
     mod
@@ -138,11 +138,11 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( HasServer (api :: Type) context,
-    FromHttpApiData a,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
+  ( HasServer (api :: Type) context
+  , FromHttpApiData a
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
   ) =>
   GHasServer
     mod
@@ -167,11 +167,11 @@ instance
 
 instance
   {-# OVERLAPPING #-}
-  ( HasServer (api :: Type) context,
-    FromHttpApiData a,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
+  ( HasServer (api :: Type) context
+  , FromHttpApiData a
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
   ) =>
   GHasServer
     mod
@@ -196,11 +196,11 @@ instance
 
 instance
   {-# OVERLAPPABLE #-}
-  ( HasServer (api :: Type) context,
-    FromHttpApiData a,
-    KnownSymbol sym,
-    KnownSymbol (Eval (mod sym)),
-    HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
+  ( HasServer (api :: Type) context
+  , FromHttpApiData a
+  , KnownSymbol sym
+  , KnownSymbol (Eval (mod sym))
+  , HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
   ) =>
   GHasServer
     mod

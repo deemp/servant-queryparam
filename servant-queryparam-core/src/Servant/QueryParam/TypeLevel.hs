@@ -22,7 +22,7 @@
 --
 -- Modules that use the 'Eval' type family (e.g., "Servant.Record") must be imported together with modules that export instances of 'Eval'
 -- (see the @GHC@ documentation on Type families).
-module Servant.TypeLevel
+module Servant.QueryParam.TypeLevel
   ( -- * Re-exports from @first-class-families@
     Eval,
     Exp,
