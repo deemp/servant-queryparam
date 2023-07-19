@@ -168,9 +168,9 @@
               updateLocksArgs = { doGitPull = false; doCommit = false; };
               cacheNixArgs = {
                 linuxGCEnabled = true;
-                linuxMaxStoreSize = 0;
+                linuxMaxStoreSize = 5100000000;
                 macosGCEnabled = true;
-                macosMaxStoreSize = 0;
+                macosMaxStoreSize = 5100000000;
               };
               steps = _:
                 stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
