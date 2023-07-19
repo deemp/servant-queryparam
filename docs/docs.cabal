@@ -9,7 +9,7 @@ author:        Danila Danko
 maintainer:    Danila Danko <https://github.com/deemp>
 category:      Servant, Web
 
-test-suite docs
+executable docs
   type: exitcode-stdio-1.0
   default-language: GHC2021
   main-is:          Main.hs

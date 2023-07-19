@@ -32,7 +32,7 @@
           inherit (inputs.devshell.lib.${system}) mkCommands mkRunCommands mkShell;
           inherit (inputs.haskell-tools.lib.${system}) toolsGHC;
           inherit (inputs.workflows.lib.${system}) writeWorkflow;
-          inherit (inputs.workflows.lib.${system}) nixCI run;
+          inherit (inputs.workflows.lib.${system}) nixCI run names os stepsIf;
           inherit (inputs.drv-tools.lib.${system}) mkShellApps getExe;
 
           # --- Parameters ---
@@ -125,7 +125,7 @@
           # --- Packages ---
 
           scripts = mkShellApps {
-            genDocs = { text = "${getExe cabal} test docs"; };
+            genDocs = { text = "cd docs && ${getExe haskellPackages.docs}"; };
           };
 
           packages = {
@@ -166,7 +166,13 @@
             writeWorkflows = writeWorkflow "ci" (nixCI {
               doPushToCachix = false;
               updateLocksArgs = { doGitPull = false; doCommit = false; };
-              steps = _: [
+              cacheNixArgs = {
+                linuxGCEnabled = true;
+                linuxMaxStoreSize = 0;
+                macosGCEnabled = true;
+                macosMaxStoreSize = 0;
+              };
+              steps = _: stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
                 {
                   name = "Update README";
                   run = run.nixScript { name = scripts.genDocs.pname; };
