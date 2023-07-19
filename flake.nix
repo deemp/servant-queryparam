@@ -173,13 +173,6 @@
                 macosMaxStoreSize = 0;
               };
               steps = _:
-                [
-                  {
-                    name = "Build example";
-                    run = run.nixScript { name = example; doRun = false; };
-                  }
-                ]
-                ++
                 stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
                   {
                     name = "Update README";
@@ -189,9 +182,15 @@
                     let name = "Commit & Push"; in
                     {
                       inherit name;
-                      run = run.nix_ { doGitPull = true; doCommit = true; commitArgs.commitMessages = [ "Update flake locks" "Update README" ]; };
+                      run = run.nix_ { doGitPull = true; doCommit = true; commitArgs = { commitMessages = [ "Update flake locks" "Update README" ]; doIgnoreCommitFailed = true; }; };
                     }
                   )
+                ] ++
+                [
+                  {
+                    name = "Build example";
+                    run = run.nixScript { name = example; doRun = false; };
+                  }
                 ];
             });
           } // scripts;
