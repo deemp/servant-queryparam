@@ -9,4 +9,4 @@ These libraries are:
 - [servant-queryparam-client](https://github.com/deemp/servant-queryparam/blob/main/servant-queryparam-client)
 - [servant-queryparam-openapi3](https://github.com/deemp/servant-queryparam/blob/main/servant-queryparam-openapi3)
 
-The following example was taken from [here](https://github.com/deemp/servant-queryparam/tree/main/servant-queryparam-example).
+The following example was taken from [here](https://github.com/deemp/servant-queryparam/tree/main/example).

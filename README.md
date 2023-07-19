@@ -1,17 +1,25 @@
 # servant-queryparam
 
-Provides several libraries that let you use records to specify query parameters in [servant](https://hackage.haskell.org/package/servant) APIs.
+Provides packages that let you use records to specify query parameters in [servant](https://hackage.haskell.org/package/servant) APIs.
 
-These libraries are:
+These packages are:
 
 - [servant-queryparam-core](./servant-queryparam-core)
 - [servant-queryparam-server](./servant-queryparam-server)
 - [servant-queryparam-client](./servant-queryparam-client)
 - [servant-queryparam-openapi3](./servant-queryparam-openapi3)
 
-An example of a server:
+Here's an example of a server:
 
-- [servant-queryparam-core-example](./servant-queryparam-example)
+- [servant-queryparam-core-example](./example/Main.hs)
+
+## Background
+
+Packages in this repo are based on the following packages:
+
+- [named-servant](https://github.com/kuribas/named-servant)
+- [named-servant-server](https://github.com/kuribas/named-servant-server)
+- [named-servant-client](https://github.com/kuribas/named-servant-client)
 
 ## Build
 

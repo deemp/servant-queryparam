@@ -1,0 +1,19 @@
+cabal-version: 2.2
+name:          docs
+version:       1.0.2
+synopsis:
+  Demo server with records that represent query parameters in @servant@ APIs.
+
+license:       BSD-3-Clause
+author:        Danila Danko
+maintainer:    Danila Danko <https://github.com/deemp>
+category:      Servant, Web
+
+test-suite docs
+  type: exitcode-stdio-1.0
+  default-language: GHC2021
+  main-is:          Main.hs
+  build-depends:
+    , base  >=4.16
+    , lima
+    , text
