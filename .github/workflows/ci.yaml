@@ -17,6 +17,10 @@ jobs:
         uses: nix-community/cache-nix-action@v1
         with:
           key: nix-${{ matrix.os }}-cachix-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
+          linux-gc-enabled: true
+          linux-max-store-size: 0
+          macos-gc-enabled: true
+          macos-max-store-size: 0
           restore-keys: |
             nix-${{ matrix.os }}-cachix-
       - name: Remove old cache profiles
@@ -31,11 +35,16 @@ jobs:
         run: |-
           nix profile install .#updateLocks
           nix run .#updateLocks
-      - name: Update README
+      - if: matrix.os == 'ubuntu-22.04'
+        name: Build example
+        run: nix profile install .#example
+      - if: matrix.os == 'ubuntu-22.04'
+        name: Update README
         run: |-
           nix profile install .#genDocs
           nix run .#genDocs
-      - name: Commit & Push
+      - if: matrix.os == 'ubuntu-22.04'
+        name: Commit & Push
         run: |-
           git pull --rebase --autostash
 

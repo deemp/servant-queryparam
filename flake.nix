@@ -77,7 +77,7 @@
               servant-queryparam-client = self.callCabal2nix servant-queryparam-client ./${servant-queryparam-client} { inherit (self) servant-queryparam-core; };
               servant-queryparam-server = self.callCabal2nix servant-queryparam-server ./${servant-queryparam-server} { inherit (self) servant-queryparam-core; };
               servant-queryparam-openapi3 = self.callCabal2nix servant-queryparam-openapi3 ./${servant-queryparam-openapi3} { inherit (self) servant-queryparam-core; };
-              "${example}" = self.callCabal2nix example ./${example} { inherit (self) servant-queryparam-core servant-queryparam-server servant-queryparam-openapi3; };
+              "${example}" = self.callCabal2nix example ./${example} { inherit (self) servant-queryparam-core servant-queryparam-server servant-queryparam-client servant-queryparam-openapi3; };
               "${docs}" = self.callCabal2nix docs ./${docs} { };
             };
           };
@@ -136,7 +136,7 @@
               servant-queryparam-client
               servant-queryparam-server
               servant-queryparam-openapi
-              example 
+              example
               docs;
 
             # --- IDE ---
@@ -173,6 +173,10 @@
                 macosMaxStoreSize = 0;
               };
               steps = _: stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
+                {
+                  name = "Build example";
+                  run = run.nixScript { name = example; doRun = false; };
+                }
                 {
                   name = "Update README";
                   run = run.nixScript { name = scripts.genDocs.pname; };
