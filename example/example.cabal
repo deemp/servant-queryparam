@@ -22,6 +22,7 @@ executable example
     , servant-queryparam-core      >=2.0.0
     , servant-queryparam-openapi3
     , servant-queryparam-server
+    , servant-queryparam-client
     , servant-server
     , transformers
     , warp
