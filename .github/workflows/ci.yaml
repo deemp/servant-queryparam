@@ -35,8 +35,7 @@ jobs:
         run: |-
           nix profile install .#updateLocks
           nix run .#updateLocks
-      - if: matrix.os == 'ubuntu-22.04'
-        name: Build example
+      - name: Build example
         run: nix profile install .#example
       - if: matrix.os == 'ubuntu-22.04'
         name: Update README

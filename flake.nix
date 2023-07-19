@@ -172,23 +172,27 @@
                 macosGCEnabled = true;
                 macosMaxStoreSize = 0;
               };
-              steps = _: stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
-                {
-                  name = "Build example";
-                  run = run.nixScript { name = example; doRun = false; };
-                }
-                {
-                  name = "Update README";
-                  run = run.nixScript { name = scripts.genDocs.pname; };
-                }
-                (
-                  let name = "Commit & Push"; in
+              steps = _:
+                [
                   {
-                    inherit name;
-                    run = run.nix_ { doGitPull = true; doCommit = true; commitArgs.commitMessages = [ "Update flake locks" "Update README" ]; };
+                    name = "Build example";
+                    run = run.nixScript { name = example; doRun = false; };
                   }
-                )
-              ];
+                ]
+                ++
+                stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
+                  {
+                    name = "Update README";
+                    run = run.nixScript { name = scripts.genDocs.pname; };
+                  }
+                  (
+                    let name = "Commit & Push"; in
+                    {
+                      inherit name;
+                      run = run.nix_ { doGitPull = true; doCommit = true; commitArgs.commitMessages = [ "Update flake locks" "Update README" ]; };
+                    }
+                  )
+                ];
             });
           } // scripts;
 
