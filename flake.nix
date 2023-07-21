@@ -7,7 +7,7 @@
       inputs_ =
         let flakes = inputs.flakes.flakes; in
         {
-          inherit (flakes.source-flake) flake-utils nixpkgs;
+          inherit (flakes.source-flake) flake-utils nixpkgs formatter;
           inherit (flakes) flakes-tools workflows devshell drv-tools codium;
           haskell-tools = flakes.language-tools.haskell;
         };
@@ -32,7 +32,7 @@
           inherit (inputs.devshell.lib.${system}) mkCommands mkRunCommands mkShell;
           inherit (inputs.haskell-tools.lib.${system}) toolsGHC;
           inherit (inputs.workflows.lib.${system}) writeWorkflow;
-          inherit (inputs.workflows.lib.${system}) nixCI run names os stepsIf;
+          inherit (inputs.workflows.lib.${system}) nixCI run names os stepsIf steps;
           inherit (inputs.drv-tools.lib.${system}) mkShellApps getExe;
 
           # --- Parameters ---
@@ -158,40 +158,45 @@
             # --- Flakes ---
 
             # Scripts that can be used in CI
-            inherit (mkFlakesTools { dirs = [ "." ]; root = ./.; }) updateLocks pushToCachix;
+            inherit (mkFlakesTools { dirs = [ "." ]; root = ./.; }) updateLocks pushToCachix format;
 
             # --- GH Actions
 
             # A script to write GitHub Actions workflow file into `.github/ci.yaml`
             writeWorkflows = writeWorkflow "ci" (nixCI {
-              doPushToCachix = false;
-              updateLocksArgs = { doGitPull = false; doCommit = false; };
-              cacheNixArgs = {
-                linuxGCEnabled = true;
-                linuxMaxStoreSize = 5100000000;
-                macosGCEnabled = true;
-                macosMaxStoreSize = 5100000000;
-              };
-              steps = _:
-                stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
-                  {
-                    name = "Update README";
-                    run = run.nixScript { name = scripts.genDocs.pname; };
-                  }
-                  (
-                    let name = "Commit & Push"; in
+              jobArgs = {
+                cacheNixArgs = {
+                  linuxGCEnabled = true;
+                  linuxMaxStoreSize = 5100000000;
+                  macosGCEnabled = true;
+                  macosMaxStoreSize = 5100000000;
+                };
+                doPushToCachix = true;
+                doSaveFlakes = false;
+                doCommit = false;
+                steps = _:
+                  stepsIf ("${names.matrix.os} == '${os.ubuntu-22}'") [
+                    (
+                      let updateReadmeName = "Update README"; in
+                      [
+                        {
+                          name = updateReadmeName;
+                          run = run.nixScript { name = scripts.genDocs.pname; };
+                        }
+                        {
+                          name = "Commit & Push";
+                          run = run.commit { messages = [ (steps.updateLocks { }).name (steps.format { }).name updateReadmeName ]; };
+                        }
+                      ]
+                    )
+                  ] ++
+                  [
                     {
-                      inherit name;
-                      run = run.nix_ { doGitPull = true; doCommit = true; commitArgs = { commitMessages = [ "Update flake locks" "Update README" ]; doIgnoreCommitFailed = true; }; };
+                      name = "Build example";
+                      run = run.nixScript { name = example; doRun = false; };
                     }
-                  )
-                ] ++
-                [
-                  {
-                    name = "Build example";
-                    run = run.nixScript { name = example; doRun = false; };
-                  }
-                ];
+                  ];
+              };
             });
           } // scripts;
 
@@ -211,6 +216,7 @@
         in
         {
           inherit packages devShells;
+          formatter = inputs.formatter.${system};
         });
     in
     outputs;
