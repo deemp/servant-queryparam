@@ -1,24 +1,14 @@
 {
   inputs.flakes.url = "github:deemp/flakes";
-
-  outputs =
-    inputs:
-    let
-      inputs_ =
-        let flakes = inputs.flakes.flakes; in
-        {
-          inherit (flakes.source-flake) flake-utils nixpkgs formatter;
-          inherit (flakes) flakes-tools workflows devshell drv-tools codium;
-          haskell-tools = flakes.language-tools.haskell;
-        };
-
-      outputs = outputs_ { } // { inputs = inputs_; outputs = outputs_; };
-
-      outputs_ =
-        inputs__:
-        let inputs = inputs_ // inputs__; in
-
-        inputs.flake-utils.lib.eachDefaultSystem (system:
+  outputs = inputs:
+    let makeFlake = inputs.flakes.makeFlake; in
+    makeFlake {
+      inputs = {
+        inherit (inputs.flakes.all)
+          nixpkgs lima formatter codium drv-tools devshell
+          flakes-tools workflows haskell-tools;
+      };
+      perSystem = { inputs, system }:
         let
           # We're going to make some dev tools for our Haskell package
           # The NixOS wiki has more info - https://nixos.wiki/wiki/Haskell
@@ -217,9 +207,8 @@
         {
           inherit packages devShells;
           formatter = inputs.formatter.${system};
-        });
-    in
-    outputs;
+        };
+    };
 
   nixConfig = {
     extra-substituters = [
