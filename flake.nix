@@ -114,15 +114,6 @@
             };
           };
 
-          packages = {
-            inherit (hpkgsFinal)
-              servant-queryparam-core
-              servant-queryparam-client
-              servant-queryparam-openapi3
-              servant-queryparam-server
-              ;
-          };
-
           legacyPackages = {
             genDocs = pkgs.writeShellApplication {
               name = "genDocs";
@@ -167,7 +158,6 @@
           inherit
             haskellProjects
             treefmt
-            packages
             devshells
             legacyPackages
             ;
