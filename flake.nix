@@ -103,6 +103,11 @@
                 enable = true;
               };
             };
+            settings = {
+              excludes = [
+                ".envrc"
+              ];
+            };
           };
 
           packages = {
