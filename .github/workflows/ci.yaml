@@ -39,6 +39,8 @@ jobs:
           gc-max-store-size: 5G
           purge-prefixes: nix-${{ matrix.os }}-job
           purge-primary-key: never
+      - name: Build example
+        run: nix build .#example
       - if: matrix.os == 'ubuntu-24.04'
         name: Config git for github-actions
         run: |
@@ -58,5 +60,3 @@ jobs:
             -m "chore: Format Nix files, update README.md" \
             || echo "commit failed!"
           git push
-      - name: Build example
-        run: nix build .#example
