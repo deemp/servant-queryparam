@@ -132,11 +132,13 @@
               (import "${inputs.cache-nix-action.outPath}/saveFromGC.nix" {
                 inherit inputs pkgs;
                 derivationsAttrs = {
-                  inherit (packages)
+                  inherit (self'.packages)
                     servant-queryparam-core
                     servant-queryparam-client
                     servant-queryparam-openapi3
                     servant-queryparam-server
+                    example
+                    docs
                     ;
                   inherit (self') formatter;
                 };
