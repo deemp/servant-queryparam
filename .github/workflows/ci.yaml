@@ -53,10 +53,12 @@ jobs:
       - if: matrix.os == 'ubuntu-24.04'
         name: Commit & Push
         run: |-
-          git add .
-          git commit \
-            -m "chore: Format Nix files, update README.md" \
-            || echo "commit failed!"
+          git add flake.nix
+          git commit -m "chore: Format Nix files" || echo "Nothing to commit!"
+          
+          git add README.md 
+          git commit -m "chore: Format README.md" || echo "Nothing to commit!"
+          
           git push
       - name: Save from GC
         run: nix build .#saveFromGC
