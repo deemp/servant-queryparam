@@ -1,0 +1,8 @@
+allow-newer:
+    openapi3:base,
+    openapi3:bytestring,
+    openapi3:containers,
+    openapi3:lens,
+    openapi3:template-haskell,
+    servant-openapi3:base,
+    servant-openapi3:openapi3

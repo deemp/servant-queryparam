@@ -26,6 +26,7 @@ jobs:
       - name: Install Nix
         uses: deemp/nix-quick-install-action@v35
         with:
+          nix_archives_url: https://github.com/deemp/nix-quick-install-action/releases/download/v35
           nix_conf: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
             substituters = https://cache.nixos.org/ https://nix-community.cachix.org https://cache.iog.io
