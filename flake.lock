@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cache-nix-action": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768746045,
+        "narHash": "sha256-LP0GiywKQtYnQGI+RLAyTSa7O5JC10KdoZhw2RR2VvE=",
+        "owner": "nix-community",
+        "repo": "cache-nix-action",
+        "rev": "3906749902b3a1fffe3610b90c0a6a17b9fec781",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "cache-nix-action",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -102,6 +118,7 @@
     },
     "root": {
       "inputs": {
+        "cache-nix-action": "cache-nix-action",
         "devshell": "devshell",
         "flake-parts": "flake-parts",
         "haskell-flake": "haskell-flake",

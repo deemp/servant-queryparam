@@ -16,6 +16,10 @@
       url = "github:deemp/lima";
       flake = false;
     };
+    cache-nix-action = {
+      url = "github:nix-community/cache-nix-action";
+      flake = false;
+    };
   };
 
   outputs =
@@ -124,6 +128,19 @@
               name = "genDocs";
               text = "cd docs && ${lib.getExe hpkgsFinal.docs}";
             };
+            saveFromGC =
+              (import "${inputs.cache-nix-action.outPath}/saveFromGC.nix" {
+                inherit inputs pkgs;
+                derivationsAttrs = {
+                  inherit (packages)
+                    servant-queryparam-core
+                    servant-queryparam-client
+                    servant-queryparam-openapi3
+                    servant-queryparam-server
+                    ;
+                  inherit (self') formatter;
+                };
+              }).package;
           };
 
           # Default shell
