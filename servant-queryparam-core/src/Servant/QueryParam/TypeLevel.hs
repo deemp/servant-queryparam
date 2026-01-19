@@ -45,7 +45,6 @@ module Servant.QueryParam.TypeLevel
 where
 
 import Fcf
-import Fcf.Data.List
 import GHC.TypeLits
 
 -- | Convert a 'Symbol' to a list of 'Char's.
