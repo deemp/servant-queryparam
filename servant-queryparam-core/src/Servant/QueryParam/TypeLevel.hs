@@ -1,8 +1,9 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE UndecidableInstances #-}
+
 -- |
 -- This module provides functions to modify 'Symbol's and type-level lists.
 --
@@ -22,26 +23,26 @@
 --
 -- Modules that use the 'Eval' type family (e.g., "Servant.Record") must be imported together with modules that export instances of 'Eval'
 -- (see the @GHC@ documentation on Type families).
-module Servant.QueryParam.TypeLevel
-  ( -- * Re-exports from @first-class-families@
-    Eval,
-    Exp,
+module Servant.QueryParam.TypeLevel (
+  -- * Re-exports from @first-class-families@
+  Eval,
+  Exp,
 
-    -- * List functions
-    FromList,
-    FromList1,
-    ToList,
-    ToList1,
+  -- * List functions
+  FromList,
+  FromList1,
+  ToList,
+  ToList1,
 
-    -- * Comparison functions
-    TyEq,
-    NotTyEq,
+  -- * Comparison functions
+  TyEq,
+  NotTyEq,
 
-    -- * Examples
-    DropUnderscores,
-    DropNonUnderscores,
-    DropPrefix,
-  )
+  -- * Examples
+  DropUnderscores,
+  DropNonUnderscores,
+  DropPrefix,
+)
 where
 
 import Fcf

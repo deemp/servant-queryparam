@@ -49,7 +49,7 @@ data GParam (mod :: Symbol -> Exp Symbol) a
 
 class GHasClient (mod :: Symbol -> Exp Symbol) m (a :: Type -> Type) api where
   gClientWithRoute ::
-    RunClient m =>
+    (RunClient m) =>
     Proxy mod ->
     Proxy m ->
     Proxy api ->
@@ -57,7 +57,7 @@ class GHasClient (mod :: Symbol -> Exp Symbol) m (a :: Type -> Type) api where
     a () ->
     Client m api
   gHoistClientMonad ::
-    RunClient m =>
+    (RunClient m) =>
     Proxy mod ->
     Proxy m ->
     Proxy api ->
@@ -78,7 +78,7 @@ instance
   {-# INLINE hoistClientMonad #-}
 
 instance
-  GHasClient mod m c api =>
+  (GHasClient mod m c api) =>
   GHasClient mod m (D1 m3 c) api
   where
   gClientWithRoute _ pm _ req (M1 x) =
@@ -89,7 +89,7 @@ instance
   {-# INLINE gHoistClientMonad #-}
 
 instance
-  GHasClient mod m a (GParam mod (b ()) :> api) =>
+  (GHasClient mod m a (GParam mod (b ()) :> api)) =>
   GHasClient mod m (a :*: b) api
   where
   gClientWithRoute _ pm _ req (x :*: y) =
@@ -106,7 +106,7 @@ instance
       y
   {-# INLINE gHoistClientMonad #-}
 
-instance GHasClient mod m a api => GHasClient mod m (C1 mon a) api where
+instance (GHasClient mod m a api) => GHasClient mod m (C1 mon a) api where
   gClientWithRoute _ pm _ req (M1 x) =
     gClientWithRoute (Proxy :: Proxy mod) pm (Proxy :: Proxy api) req x
   {-# INLINE gClientWithRoute #-}

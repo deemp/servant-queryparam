@@ -101,15 +101,15 @@ instance (Generic a, GHasLink mod (Rep a) sub) => HasLink (RecordParam mod a :> 
 
 data GParam (mod :: Symbol -> Exp Symbol) a
 
-instance GHasLink mod a sub => HasLink (GParam mod (a ()) :> sub) where
+instance (GHasLink mod a sub) => HasLink (GParam mod (a ()) :> sub) where
   type MkLink (GParam mod (a ()) :> sub) b = a () -> MkLink sub b
   toLink toA _ = gToLink (Proxy :: Proxy mod) toA (Proxy :: Proxy sub)
   {-# INLINE toLink #-}
 
-class HasLink sub => GHasLink (mod :: Symbol -> Exp Symbol) (a :: Type -> Type) sub where
+class (HasLink sub) => GHasLink (mod :: Symbol -> Exp Symbol) (a :: Type -> Type) sub where
   gToLink :: Proxy mod -> (Link -> b) -> Proxy sub -> Link -> a () -> MkLink sub b
 
-instance GHasLink mod c sub => GHasLink mod (D1 m c) sub where
+instance (GHasLink mod c sub) => GHasLink mod (D1 m c) sub where
   gToLink _ toA _ l (M1 x) = gToLink (Proxy :: Proxy mod) toA (Proxy :: Proxy sub) l x
   {-# INLINE gToLink #-}
 

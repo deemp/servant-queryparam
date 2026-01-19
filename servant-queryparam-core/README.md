@@ -46,9 +46,9 @@ import Servant (Application, Context (..), GenericMode ((:-)), Get, Handler (..)
 import Servant.OpenApi (HasOpenApi (..))
 import Servant.QueryParam.OpenApi.Record ()
 import Servant.QueryParam.Record (RecordParam)
+import Servant.QueryParam.Server.Record ()
 import Servant.QueryParam.TypeLevel (DropPrefix, Eval, Exp)
 import Servant.Server.Generic (genericServe, genericServeTWithContext)
-import Servant.QueryParam.Server.Record ()
 ```
 
 I define a label for dropping the prefix of a `Symbol`.

@@ -11,6 +11,6 @@ import Servant.API
 import Servant.OpenApi
 import Servant.QueryParam.Record
 
-instance HasOpenApi (UnRecordParam mod (RecordParam mod a :> api)) => HasOpenApi (RecordParam mod a :> api) where
+instance (HasOpenApi (UnRecordParam mod (RecordParam mod a :> api))) => HasOpenApi (RecordParam mod a :> api) where
   toOpenApi :: Proxy (RecordParam mod a :> api) -> OpenApi
   toOpenApi _ = toOpenApi (Proxy :: Proxy (UnRecordParam mod (RecordParam mod a :> api)))

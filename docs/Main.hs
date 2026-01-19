@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Lima.Converter (Format (..), convertTo, def)
 import Data.Text.IO qualified as T
+import Lima.Converter (Format (..), convertTo, def)
 
 main :: IO ()
 main = do

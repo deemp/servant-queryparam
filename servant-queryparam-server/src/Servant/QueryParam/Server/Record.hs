@@ -54,7 +54,7 @@ class GHasServer (mod :: Symbol -> Exp Symbol) (a :: Type -> Type) context api w
 data GParam (mod :: Symbol -> Exp Symbol) a
 
 instance
-  GHasServer mod a context api =>
+  (GHasServer mod a context api) =>
   HasServer (GParam mod (a ()) :> api) context
   where
   type ServerT (GParam mod (a ()) :> api) m = a () -> ServerT api m
@@ -64,7 +64,7 @@ instance
   {-# INLINE hoistServerWithContext #-}
 
 instance
-  GHasServer mod c context api =>
+  (GHasServer mod c context api) =>
   GHasServer mod (D1 m3 c) context api
   where
   gRoute _ _ context env =
@@ -76,7 +76,7 @@ instance
   {-# INLINE gHoistServerWithContext #-}
 
 instance
-  GHasServer mod a context (GParam mod (b ()) :> api) =>
+  (GHasServer mod a context (GParam mod (b ()) :> api)) =>
   GHasServer mod (a :*: b) context api
   where
   gRoute _ _ context env =
@@ -98,7 +98,7 @@ instance
   {-# INLINE gHoistServerWithContext #-}
 
 instance
-  GHasServer mod a context api =>
+  (GHasServer mod a context api) =>
   GHasServer mod (C1 n a) context api
   where
   gRoute _ _ context env =
