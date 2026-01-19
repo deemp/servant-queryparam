@@ -1,1 +1,7 @@
-packages: servant-queryparam-* docs example
+packages:
+    servant-queryparam-client
+    servant-queryparam-core
+    servant-queryparam-openapi3
+    servant-queryparam-server
+    docs
+    example
