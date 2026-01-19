@@ -1,87 +1,3 @@
-jobs:
-  nixCI:
-    name: Nix CI
-    permissions:
-      actions: write
-      contents: write
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout this repo
-        uses: actions/checkout@v3
-      - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@v25
-        with:
-          nix_conf: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-            substituters = https://cache.nixos.org/ https://nix-community.cachix.org https://cache.iog.io https://deemp.cachix.org
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= deemp.cachix.org-1:9shDxyR2ANqEPQEEYDL/xIOnoPwxHot21L5fiZnFL18=
-            keep-outputs = true
-      - name: Restore and cache Nix store
-        uses: nix-community/cache-nix-action@v1
-        with:
-          key: nix-${{ matrix.os }}-job-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
-          linux-gc-enabled: true
-          linux-max-store-size: 5100000000
-          macos-gc-enabled: true
-          macos-max-store-size: 5100000000
-          restore-keys: |
-            nix-${{ matrix.os }}-job-
-      - name: Remove old cache profiles
-        run: rm -rf /nix/var/nix/profiles/cache
-      - if: matrix.os == 'ubuntu-22.04'
-        name: Config git for github-actions
-        run: |
-          git config --global user.name github-actions
-          git config --global user.email github-actions@github.com
-      - if: matrix.os == 'ubuntu-22.04'
-        name: Format Nix files
-        run: |-
-          nix profile install .#format
-          nix run .#format
-      - if: matrix.os == 'ubuntu-22.04'
-        name: Update flake locks
-        run: |-
-          nix profile install .#updateLocks
-          nix run .#updateLocks
-      - if: matrix.os == 'ubuntu-22.04'
-        name: Update README
-        run: |-
-          nix profile install .#genDocs
-          nix run .#genDocs
-      - if: matrix.os == 'ubuntu-22.04'
-        name: Commit & Push
-        run: |-
-          git add .
-          git commit \
-            -m "action" \
-            -m "Update flake locks" \
-            -m "Format Nix files" \
-            -m "Update README" \
-            || echo "commit failed!"
-          git push
-      - name: Build example
-        run: nix profile install .#example
-      - env:
-          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          CACHIX_CACHE: ${{ secrets.CACHIX_CACHE }}
-        name: Push flakes to Cachix
-        run: |-
-          nix profile install .#pushToCachix
-          nix run .#pushToCachix
-      - name: Purge cache
-        uses: deemp/purge-cache@v1
-        with:
-          accessed: false
-          created: true
-          debug: true
-          max-age: 172800
-    strategy:
-      matrix:
-        os:
-          - macos-11
-          - macos-12
-          - ubuntu-20.04
-          - ubuntu-22.04
 name: Nix CI
 "on":
   pull_request: {}
@@ -89,3 +5,60 @@ name: Nix CI
   schedule:
     - cron: 0 0 * * *
   workflow_dispatch: {}
+
+jobs:
+  nixCI:
+    name: Nix CI
+    permissions:
+      actions: write
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-15
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v6
+      - name: Install Nix
+        uses: deemp/nix-quick-install-action@v35
+        with:
+          nix_conf: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            substituters = https://cache.nixos.org/ https://nix-community.cachix.org https://cache.iog.io
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+      - name: Restore and cache Nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ matrix.os }}-job-${{ hashfiles('**/flake.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ matrix.os }}-job-
+          gc-max-store-size: 5G
+          purge-prefixes: nix-${{ matrix.os }}-job
+          purge-primary-key: never
+      - if: matrix.os == 'ubuntu-24.04'
+        name: Config git for github-actions
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+      - if: matrix.os == 'ubuntu-24.04'
+        name: Format Nix files
+        run: nix fmt
+      - if: matrix.os == 'ubuntu-24.04'
+        name: Update README
+        run: nix run .#genDocs
+      - if: matrix.os == 'ubuntu-24.04'
+        name: Commit & Push
+        run: |-
+          git add .
+          git commit \
+            -m "chore: Format Nix files, update README.md" \
+            || echo "commit failed!"
+          git push
+      - name: Build example
+        run: |
+          nix run .#example &
+          curl -v "localhost:8080/get?user=1&users=2&users=3&oneUser=4&userFlag=true"
+          kill -9 `ps -aux | grep example | grep -v grep |  awk '{ print $2 }'`
