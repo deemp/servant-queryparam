@@ -60,3 +60,5 @@ jobs:
             -m "chore: Format Nix files, update README.md" \
             || echo "commit failed!"
           git push
+      - name: Save from GC
+        run: nix build .#saveFromGC
