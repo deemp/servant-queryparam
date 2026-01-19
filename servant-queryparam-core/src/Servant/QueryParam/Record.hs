@@ -11,8 +11,8 @@
 -- | This module provides functions and instances for working with query parameter records.
 module Servant.QueryParam.Record (RecordParam, UnRecordParam) where
 
-import qualified Data.List as List
 import Data.Kind
+import Data.List qualified as List
 import Data.Proxy
 import GHC.Generics
 import GHC.TypeLits
@@ -157,9 +157,9 @@ instance
   where
   gToLink _ toA _ l (M1 (K1 x)) =
     toLink toA (Proxy :: Proxy sub) $
-    List.foldl' (\l' v -> addQueryParam (ArrayElemParam k (toQueryParam v)) l') l x
-    where
-      k = symbolVal (Proxy :: Proxy sym)
+      List.foldl' (\l' v -> addQueryParam (ArrayElemParam k (toQueryParam v)) l') l x
+   where
+    k = symbolVal (Proxy :: Proxy sym)
   {-# INLINE gToLink #-}
 
 instance
@@ -173,10 +173,10 @@ instance
   where
   gToLink _ toA _ l (M1 (K1 x)) =
     toLink toA (Proxy :: Proxy sub) $
-    maybe id (addQueryParam . SingleParam k . toQueryParam) x l
-    where
-      k :: String
-      k = symbolVal (Proxy :: Proxy sym)
+      maybe id (addQueryParam . SingleParam k . toQueryParam) x l
+   where
+    k :: String
+    k = symbolVal (Proxy :: Proxy sym)
   {-# INLINE gToLink #-}
 
 instance
@@ -190,8 +190,8 @@ instance
   where
   gToLink _ toA _ l (M1 (K1 x)) =
     toLink toA (Proxy :: Proxy sub) $
-    (addQueryParam . SingleParam k . toQueryParam) x l
-    where
-      k :: String
-      k = symbolVal (Proxy :: Proxy sym)
+      (addQueryParam . SingleParam k . toQueryParam) x l
+   where
+    k :: String
+    k = symbolVal (Proxy :: Proxy sym)
   {-# INLINE gToLink #-}
