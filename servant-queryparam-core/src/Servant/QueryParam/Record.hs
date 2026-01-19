@@ -12,10 +12,12 @@
 module Servant.QueryParam.Record (RecordParam, UnRecordParam) where
 
 import Data.Kind
+import Data.List qualified as List
 import Data.Proxy
 import GHC.Generics
 import GHC.TypeLits
 import Servant.API
+import Servant.Links
 import Servant.QueryParam.TypeLevel
 
 -- | 'RecordParam' uses fields in a record to represent query parameters.
@@ -149,13 +151,15 @@ instance
   ( KnownSymbol sym
   , KnownSymbol (Eval (mod sym))
   , ToHttpApiData a
-  , HasLink (a :> sub)
   , HasLink sub
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 [a])) sub
   where
   gToLink _ toA _ l (M1 (K1 x)) =
-    toLink toA (Proxy :: Proxy (QueryParams (Eval (mod sym)) a :> sub)) l x
+    toLink toA (Proxy :: Proxy sub) $
+      List.foldl' (\l' v -> addQueryParam (ArrayElemParam k (toQueryParam v)) l') l x
+   where
+    k = symbolVal (Proxy :: Proxy sym)
   {-# INLINE gToLink #-}
 
 instance
@@ -163,13 +167,16 @@ instance
   ( KnownSymbol sym
   , KnownSymbol (Eval (mod sym))
   , ToHttpApiData a
-  , HasLink (a :> sub)
   , HasLink sub
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 (Maybe a))) sub
   where
   gToLink _ toA _ l (M1 (K1 x)) =
-    toLink toA (Proxy :: Proxy (QueryParam' '[Optional, Strict] (Eval (mod sym)) a :> sub)) l x
+    toLink toA (Proxy :: Proxy sub) $
+      maybe id (addQueryParam . SingleParam k . toQueryParam) x l
+   where
+    k :: String
+    k = symbolVal (Proxy :: Proxy sym)
   {-# INLINE gToLink #-}
 
 instance
@@ -177,11 +184,14 @@ instance
   ( KnownSymbol sym
   , KnownSymbol (Eval (mod sym))
   , ToHttpApiData a
-  , HasLink (a :> sub)
   , HasLink sub
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 a)) sub
   where
   gToLink _ toA _ l (M1 (K1 x)) =
-    toLink toA (Proxy :: Proxy (QueryParam' '[Required, Strict] (Eval (mod sym)) a :> sub)) l x
+    toLink toA (Proxy :: Proxy sub) $
+      (addQueryParam . SingleParam k . toQueryParam) x l
+   where
+    k :: String
+    k = symbolVal (Proxy :: Proxy sym)
   {-# INLINE gToLink #-}
