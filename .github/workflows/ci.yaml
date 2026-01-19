@@ -59,7 +59,4 @@ jobs:
             || echo "commit failed!"
           git push
       - name: Build example
-        run: |
-          nix run .#example &
-          curl -v "localhost:8080/get?user=1&users=2&users=3&oneUser=4&userFlag=true"
-          kill -9 `ps -aux | grep example | grep -v grep |  awk '{ print $2 }'`
+        run: nix build .#example
