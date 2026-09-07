@@ -149,8 +149,7 @@ instance
   ( KnownSymbol sym
   , KnownSymbol (Eval (mod sym))
   , ToHttpApiData a
-  , HasLink (a :> sub)
-  , HasLink sub
+  , HasLink (sub :: Type)
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 [a])) sub
   where
@@ -163,8 +162,7 @@ instance
   ( KnownSymbol sym
   , KnownSymbol (Eval (mod sym))
   , ToHttpApiData a
-  , HasLink (a :> sub)
-  , HasLink sub
+  , HasLink (sub :: Type)
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 (Maybe a))) sub
   where
@@ -177,8 +175,7 @@ instance
   ( KnownSymbol sym
   , KnownSymbol (Eval (mod sym))
   , ToHttpApiData a
-  , HasLink (a :> sub)
-  , HasLink sub
+  , HasLink (sub :: Type)
   ) =>
   GHasLink mod (S1 ('MetaSel ('Just sym) d1 d2 d3) (Rec0 a)) sub
   where
